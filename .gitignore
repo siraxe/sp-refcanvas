@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+build_*.txt
+dist/
+
+plugin_py/
