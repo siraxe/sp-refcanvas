@@ -17,9 +17,7 @@ sessions.
   </tr>
   <tr>
     <td><b>Color Swap</b> &mdash; <code>Shift + X</code><br>(rebindable)</td>
-    <td rowspan="6">
-      <a href="git/example.mp4">&#9654; demo video (mp4)</a>
-    </td>
+    <td rowspan="6"><i>video placeholder</i></td>
   </tr>
   <tr>
     <td><b>Transform Layer</b> &mdash; <code>Ctrl + T</code><br>(rebindable)</td>
