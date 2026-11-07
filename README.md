@@ -13,11 +13,15 @@ sessions.
 <table>
   <tr>
     <th width="30%">Hotkey</th>
-    <th width="70%">Video</th>
+    <th width="70%">Preview</th>
   </tr>
   <tr>
     <td><b>Color Swap</b> &mdash; <code>Shift + X</code><br>(rebindable)</td>
-    <td rowspan="6"><i>video placeholder</i></td>
+    <td rowspan="6"><i>
+
+https://github.com/user-attachments/assets/ccdb0242-8a47-46ed-a3c8-2dd43083dbcf
+
+</i></td>
   </tr>
   <tr>
     <td><b>Transform Layer</b> &mdash; <code>Ctrl + T</code><br>(rebindable)</td>
