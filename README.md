@@ -18,9 +18,7 @@ sessions.
   <tr>
     <td><b>Color Swap</b> &mdash; <code>Shift + X</code><br>(rebindable)</td>
     <td rowspan="6">
-      <video src="git/example.mp4" width="100%" controls muted>
-        <a href="git/example.mp4">watch the demo video</a>
-      </video>
+      <a href="git/example.mp4">&#9654; demo video (mp4)</a>
     </td>
   </tr>
   <tr>
