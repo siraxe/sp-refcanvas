@@ -39,6 +39,15 @@ sessions.
 Rebindable shortcuts can be changed in `REFCANVAS Settings`, where all
 hotkeys can also be switched off at once.
 
+## Install
+
+1. Download `refcanvas_plugin-0.1.0.zip` from the
+   [releases page](https://github.com/siraxe/sp-refcanvas/releases).
+2. Unzip it.
+3. Copy the `refcanvas_plugin` folder into
+   `%USERPROFILE%\Documents\Adobe\Adobe Substance 3D Painter\python\plugins\`.
+4. Restart Painter; the `REFCANVAS` dock opens on startup.
+
 ## License
 
 Released under the [MIT License](LICENSE).

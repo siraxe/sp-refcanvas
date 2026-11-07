@@ -3,4 +3,4 @@ __pycache__/
 build_*.txt
 dist/
 
-plugin_py/
+*.zip

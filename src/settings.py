@@ -19,7 +19,6 @@ except ImportError:  # plugin loaded as a plain module, not a package
 
 WHEEL_CORNERS = ("bottom left", "bottom right", "top left", "top right")
 
-# Dummy placeholder until the public repository exists.
 ISSUES_URL = "https://github.com/siraxe/sp-refcanvas"
 
 
