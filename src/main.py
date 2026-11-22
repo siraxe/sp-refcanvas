@@ -4,8 +4,6 @@ from __future__ import annotations
 import os
 import sys
 
-__version__ = "0.1.0"
-
 _STARTED = False
 _state = {
     "panel": None,
@@ -16,20 +14,21 @@ _state = {
 
 try:
     from .common import (_app, _log, _log_exc, _main_window, _qt, _qt_info,
-                         _valid)
+                         _valid, VERSION)
     from .dockstate import attach as _dock_attach
     from .dockstate import detach as _dock_detach
     from .dockstate import save_now as _dock_save
     from .panel import RefCanvasPanel, make_window_icon
 except ImportError:
     from common import (_app, _log, _log_exc, _main_window, _qt, _qt_info,
-                        _valid)
+                        _valid, VERSION)
     from dockstate import attach as _dock_attach
     from dockstate import detach as _dock_detach
     from dockstate import save_now as _dock_save
     from panel import RefCanvasPanel, make_window_icon
 
 QtCore, QtGui, QtWidgets = _qt()
+__version__ = VERSION
 _PANEL_TITLE = "REFCANVAS"
 
 
@@ -136,6 +135,18 @@ def _teardown():
         _log_exc("dock layout detach")
     panel = _state.get("panel")
     dock = _state.get("dock")
+    try:
+        from .live import shutdown as _live_shutdown
+    except ImportError:
+        try:
+            from live import shutdown as _live_shutdown
+        except Exception:
+            _live_shutdown = None
+    if _live_shutdown is not None:
+        try:
+            _live_shutdown()
+        except Exception:
+            _log_exc("live shutdown")
     if panel is not None and _valid(panel):
         try:
             panel.flush_state()
@@ -239,3 +250,10 @@ def close_plugin():
             pass
     _state["timer"] = None
     _teardown()
+    # Let released Qt wrappers die now, while Painter's Qt world still
+    # exists, rather than during interpreter finalization (crashes SP 12).
+    try:
+        import gc
+        gc.collect()
+    except Exception:
+        pass

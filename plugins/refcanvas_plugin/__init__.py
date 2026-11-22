@@ -5,8 +5,6 @@ import importlib
 import os
 import sys
 
-__version__ = "0.1.0"
-
 
 def _package_dir():
     """Make submodules importable when Painter loaded this file as a plain module."""
@@ -55,6 +53,6 @@ def _install():
 
 
 _main = _install()
-__version__ = getattr(_main, "__version__", __version__)
+__version__ = getattr(_main, "__version__", None)
 start_plugin = _main.start_plugin
 close_plugin = _main.close_plugin

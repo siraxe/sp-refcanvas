@@ -3,22 +3,15 @@ from __future__ import annotations
 
 try:
     from . import hotkeys
-    from .common import _qt
+    from .common import _qt, VERSION as __version__
 except ImportError:  # plugin loaded as a plain module, not a package
     import hotkeys
-    from common import _qt
-
-try:
-    from . import __version__
-except ImportError:  # plugin loaded as a plain module, not a package
-    try:
-        from __init__ import __version__
-    except Exception:
-        __version__ = "0.1.0"
+    from common import _qt, VERSION as __version__
 
 
 WHEEL_CORNERS = ("bottom left", "bottom right", "top left", "top right")
 
+# Dummy placeholder until the public repository exists.
 ISSUES_URL = "https://github.com/siraxe/sp-refcanvas"
 
 

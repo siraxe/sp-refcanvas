@@ -7,6 +7,10 @@ import threading
 import time
 import traceback
 
+# Single source of truth for the plugin version.  Bump it here only;
+# main.py and settings.py pull it from this module.
+VERSION = "0.1.1"
+
 LOG_DIR = os.path.join(
     os.environ.get("LOCALAPPDATA", os.path.expanduser("~")), "refcanvas")
 LOG_PATH = os.path.join(LOG_DIR, "refcanvas.log")

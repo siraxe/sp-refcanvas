@@ -58,8 +58,45 @@ def _hold(*widgets):
         del refs[:-24]
 
 
+def shutdown():
+    """Drop every cached Painter widget wrapper before the app exits.
+
+    Painter destroys its Qt objects during shutdown, before the Python
+    interpreter finalizes.  Wrappers still referenced from Python at that
+    point are torn down by shiboken afterwards, which crashes on newer
+    Painter builds (SP 12).  Releasing the references at close_plugin time
+    lets the wrappers die while Painter's Qt world still exists.
+    """
+    _STATE["widget_refs"] = []
+    for key in ("view", "button", "target", "slot", "sig", "retried",
+                "write_fail", "color"):
+        _STATE[key] = None
+    try:
+        set_fault_callback(None)
+    except Exception:
+        pass
+
+
+def _project_open():
+    """True while a Painter project is open.
+
+    Without a project there is no paint tool to receive the colour and
+    scanning Painter's UI in that state leaves the bridge touching
+    transient widgets, which can take the app down on exit (SP 12).
+    """
+    try:
+        import substance_painter.project as project
+        return bool(project.is_open())
+    except Exception:
+        return True  # API unavailable: keep the old behaviour.
+
+
 def _discover():
     """Find the active paint Base Color target."""
+    if not _project_open():
+        _drop_cache()
+        _diag("noproj", "no project open; Live target skipped")
+        return None
     rows = _candidate_views()
     rows = [row for row in rows if _alive(row.get("widget"))]
     rows.sort(key=lambda row: float(row.get("score") or 0.0), reverse=True)

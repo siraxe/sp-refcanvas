@@ -32,6 +32,22 @@ _SEQ_MATCH = getattr(QtGui.QKeySequence, "SequenceMatch", QtGui.QKeySequence)
 _EXACT_MATCH = _SEQ_MATCH.ExactMatch
 
 
+def _pressed_sequence(event):
+    """QKeySequence for a key event, on Qt 5 and Qt 6 alike."""
+    key = event.key()
+    mods = event.modifiers()
+    comb = getattr(QtCore, "QKeyCombination", None)
+    if comb is not None:  # Qt 6: build the typed combination explicitly.
+        try:
+            return QtGui.QKeySequence(comb(mods, QtCore.Qt.Key(key)))
+        except Exception:
+            pass
+    try:  # Qt 5: flags combine with the key into a plain int.
+        return QtGui.QKeySequence(int(mods) | int(key))
+    except TypeError:
+        return QtGui.QKeySequence(key | mods)
+
+
 def make_window_icon():
     """Draw the panel icon used by Painter to reopen the dock."""
     size = 32
@@ -745,6 +761,11 @@ class RefCanvasPanel(QtWidgets.QWidget):
         self._save_controls()
         self._save_swatches()
         self._save_document()
+        # Release the module-level callback holding this panel alive.
+        try:
+            live.set_fault_callback(None)
+        except Exception:
+            _log_exc("fault callback release")
         app = QtWidgets.QApplication.instance()
         if app is not None:
             app.removeEventFilter(self)
@@ -841,8 +862,7 @@ class RefCanvasPanel(QtWidgets.QWidget):
                     and not self._typing_focus()
                     and QtWidgets.QApplication.activeModalWidget() is None
                     and QtWidgets.QApplication.activePopupWidget() is None):
-                pressed = QtGui.QKeySequence(
-                    int(event.modifiers()) | int(event.key()))
+                pressed = _pressed_sequence(event)
                 swap = getattr(self, "_swap_sequence", None)
                 if (swap is not None and not swap.isEmpty()
                         and swap.matches(pressed) == _EXACT_MATCH):
